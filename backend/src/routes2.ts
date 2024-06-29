@@ -22,6 +22,10 @@ const resolutionFormatIds: { [resolution: string]: string[] } = {
   "1080p": ["270", "614"],
   "1440p": ["620"],
   "2160p": ["625"],
+  "720p60":["311"],
+  "1080p60":["312"],
+  "1440p60":["623"],
+  "2160p60":["628"]
 };
 
 const generateUniqueFilename = (base: string): string => {
@@ -40,7 +44,6 @@ const storage = new Storage({ projectId, keyFilename });
  * @param {string} videoUrl - The YouTube video URL.
  * @returns {Promise<string[]>} - A promise that resolves to an array of unique quality labels.
  */
-
 async function getQualityLabels(videoUrl: string): Promise<string[]> {
   try {
     const { stdout } = await execAsync(`yt-dlp -F ${videoUrl}`);
@@ -48,7 +51,7 @@ async function getQualityLabels(videoUrl: string): Promise<string[]> {
 
     // Define a function to extract quality label
     const extractQuality = (info: string) => {
-      const match = info.match(/(\d+p)/);
+      const match = info.match(/\b(?:144|240|360|480|720|1080|1440|2160)p(?:60)?\b/);
       return match ? match[0] : null;
     };
 
@@ -65,8 +68,23 @@ async function getQualityLabels(videoUrl: string): Promise<string[]> {
         (quality: any, index: any, self: string | any[]) =>
           quality && self.indexOf(quality) === index
       ); // Remove duplicates and null values
+
+    // Determine if any 60fps formats are present
     //@ts-ignore
-    return qualities;
+    const is60fpsVideo = qualities.some((quality) => quality.endsWith("60"));
+
+    // Filter out lower frame rate versions if 60fps video is detected
+    const filteredQualities = qualities.filter((quality) => {
+      if (is60fpsVideo) {
+        //@ts-ignore
+        return quality.endsWith("60");
+      } else {
+        //@ts-ignore
+        return !quality.endsWith("60");
+      }
+    });
+//@ts-ignore
+    return filteredQualities;
   } catch (error) {
     console.error("Error fetching video formats:", error);
     throw error;

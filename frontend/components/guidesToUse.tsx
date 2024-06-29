@@ -8,9 +8,10 @@ const GuidesToUse = () => {
             Under Construction!
         </div>
         <ul className='text-lg p-10'>
-            <li>As of now, use it for songs only!</li>
-            <li>Please avoid selecting resolutions above 1080p, as it may require a longer conversion time.</li>
-            <li>Approximate time for a 1080p song is around ~40 seconds.</li>
+            <li>- As of now, use it for songs only!</li><br/>
+            <li>- Please avoid selecting resolutions above 1080p, as it may require a longer conversion time.</li><br/>
+            <li>- Approximate time for a 1080p song is around ~15 seconds.</li><br/>
+             <li>- As of now, supports only 30/60fps videos.</li><br/>
         </ul>
         <div className='flex justify-center items-center ' >
         <Image

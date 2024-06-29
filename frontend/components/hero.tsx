@@ -10,8 +10,6 @@ const Hero = () => {
     </div>
     <div className=' p-10 flex flex-col md:grid md:grid-cols-3 gap-8 md:justify-around md:flex-row justify-center justify-items-center  items-center h-[30vh] md:h-[40vh]'>
         <Component/>
-
-       
     </div> 
     <GuidesToUse/>
     </>

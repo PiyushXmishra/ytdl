@@ -31,7 +31,7 @@ import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } fro
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { ModeToggle } from "./darkmode"
 
-export function Component() {
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <header className="flex h-16 items-center justify-between px-4 md:px-6">
