@@ -30,7 +30,7 @@ export function Component() {
   const fetchFormats = async () => {
     setIsLoadingFormats(true);
     try {
-      const response = await axios.post('http://localhost:3000/api/formats', { videoUrl });
+      const response = await axios.post('http://localhost:4000/api/formats', { videoUrl });
       const result = response.data;
       setThemeOptions(result);
       setIsSelectDisabled(false); // Enable select after formats are loaded
@@ -51,7 +51,7 @@ export function Component() {
     setIsLoadingDownload(true);
     try {
       const formData = { videoUrl, resolution: selectedResolution };
-      const response = await axios.post('http://localhost:3000/api/download', formData);
+      const response = await axios.post('http://localhost:4000/api/download', formData);
       setDownloadResponse(response.data);
     } catch (error) {
       console.error('An error occurred while downloading.');

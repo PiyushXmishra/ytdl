@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: piyushm1501/ytdl-app-frontend:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    image: piyushm1501/ytdl-app-backend:latest
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/mythical-style-423213-a3-0b1c4a2513bb.json:/app/mythical-style-423213-a3-0b1c4a2513bb.json
