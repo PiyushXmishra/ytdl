@@ -31,3 +31,29 @@ jobs:
 
     - name: Verify Pushed Image
       run: docker pull piyushm1501/testingytdl:latest
+      
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+
+          echo "${{ secrets.SECRET_JSON_BASE64 }}" | base64 -d > secret.json
+
+          export PROJECT_ID=${{ secrets.PROJECT_ID }}
+          export KEYFILENAME=${{ secrets.KEYFILENAME }}
+          export BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+
+          sudo docker pull piyushm1501/testingytdl:latest
+
+          sudo docker stop web-app || true
+          sudo docker rm web-app || true
+
+          sudo docker run -d --name web-app -p 4000:4000 \
+            -e PROJECT_ID=${PROJECT_ID} \
+            -e KEYFILENAME=${KEYFILENAME} \
+            -e BUCKET_NAME=${BUCKET_NAME} \
+            -v $(pwd)/secret.json:/app/secret.json \
+            piyushm1501/testingytdl:latest
