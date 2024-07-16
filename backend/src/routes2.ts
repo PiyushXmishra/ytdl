@@ -119,7 +119,6 @@ router.post("/download", async (req, res) => {
   if (!formatIds) {
     return res.status(400).json({ error: "Invalid resolution." });
   }
-
   const uniqueFilename = generateUniqueFilename("downloaded_video");
 
   try {
