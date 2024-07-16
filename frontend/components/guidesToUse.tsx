@@ -4,7 +4,7 @@ import widget from "../public/PiyushXmishra-github-business-card.png"
 const GuidesToUse = () => {
   return (
     <div>
-        <div className='text-2xl mt-20 text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-transparent bg-clip-text'>
+        <div className='text-2xl  md:mt-20 text-center bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-transparent bg-clip-text'>
             Under Construction!
         </div>
         <ul className='text-lg p-10'>

@@ -46,9 +46,18 @@ const storage = new Storage({ projectId, keyFilename });
  */
 async function getQualityLabels(videoUrl: string): Promise<string[]> {
   try {
-    const { stdout } = await execAsync(`yt-dlp -F ${videoUrl}`);
-    const formatLines = stdout.split("\n").slice(4); // Skip the first few header lines
+    const { stdout: formatsStdout } = await execAsync(`yt-dlp -F ${videoUrl}`);
+    const formatLines = formatsStdout.split("\n").slice(4); // Skip the first few header lines
 
+    // Get video metadata
+    const { stdout: metadataStdout } = await execAsync(`yt-dlp --skip-download --get-title --get-thumbnail --get-duration ${videoUrl}`);
+    const metadataLines = metadataStdout.split("\n");
+
+    const Title = metadataLines[0];
+    const ThumbnailURL = metadataLines[1];
+    const Duration = metadataLines[2];
+
+    const Metadata = {Title,ThumbnailURL,Duration}
     // Define a function to extract quality label
     const extractQuality = (info: string) => {
       const match = info.match(/\b(?:144|240|360|480|720|1080|1440|2160)p(?:60)?\b/);
@@ -84,7 +93,7 @@ async function getQualityLabels(videoUrl: string): Promise<string[]> {
       }
     });
 //@ts-ignore
-    return filteredQualities;
+    return {qualities:filteredQualities, Metadata:Metadata};
   } catch (error) {
     console.error("Error fetching video formats:", error);
     throw error;
@@ -94,8 +103,9 @@ async function getQualityLabels(videoUrl: string): Promise<string[]> {
 router.post("/formats", async (req, res) => {
   const { videoUrl } = req.body;
   try {
-    const qualities = await getQualityLabels(videoUrl);
-    res.json(qualities);
+    const qualitiesAndMetadata = await getQualityLabels(videoUrl);
+    console.log(qualitiesAndMetadata);
+    res.json(qualitiesAndMetadata);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch formats." });
   }

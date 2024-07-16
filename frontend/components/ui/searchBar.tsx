@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -12,9 +12,9 @@ import {
 } from "./select";
 
 export function Component() {
-  const [videoUrl, setVideoUrl] = useState('');
+  const [videoUrl, setVideoUrl] = useState("");
   const [themeOptions, setThemeOptions] = useState<string[]>([]);
-  const [selectedResolution, setSelectedResolution] = useState<string>(''); // State to store selected resolution
+  const [selectedResolution, setSelectedResolution] = useState<string>(""); // State to store selected resolution
   const [isLoadingFormats, setIsLoadingFormats] = useState(false); // State to track loading state for formats
   const [isLoadingDownload, setIsLoadingDownload] = useState(false); // State to track loading state for download
   const [isSelectDisabled, setIsSelectDisabled] = useState(true); // State to disable select initially
@@ -22,20 +22,38 @@ export function Component() {
     DownloadUrl: string;
     previewUrl: string;
   } | null>(null); // State to store download response
+  const [title, setTitle] = useState<string>(""); // State to store video title
+  const [thumbnailURL, setThumbnailURL] = useState<string>(""); // State to store thumbnail URL
+  const [duration, setDuration] = useState<string>(""); // State to store video duration
 
   useEffect(() => {
-    setIsSelectDisabled(true); // Disable select on component mount
-  }, []);
+    // Fetch formats only on component mount
+    if (videoUrl) {
+      fetchFormats();
+    }
+  }, [videoUrl]);
 
   const fetchFormats = async () => {
     setIsLoadingFormats(true);
     try {
-      const response = await axios.post('http://localhost:4000/api/formats', { videoUrl });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/formats`,
+        { videoUrl },
+        { timeout: 60000 }
+      );
       const result = response.data;
-      setThemeOptions(result);
-      setIsSelectDisabled(false); // Enable select after formats are loaded
+      console.log(result);
+      if (Array.isArray(result.qualities)) {
+        setThemeOptions(result.qualities);
+        setTitle(result.Metadata.Title);
+        setThumbnailURL(result.Metadata.ThumbnailURL);
+        setDuration(result.Metadata.Duration);
+        setIsSelectDisabled(false); // Enable select after formats are loaded
+      } else {
+        console.error("Received data format is invalid:", result);
+      }
     } catch (error) {
-      console.error('An error occurred while fetching formats.');
+      console.error("An error occurred while fetching formats.");
       console.error(error);
     } finally {
       setIsLoadingFormats(false);
@@ -44,17 +62,20 @@ export function Component() {
 
   const handleDownload = async () => {
     if (!videoUrl || !selectedResolution) {
-      console.error('Video URL and Resolution are required.');
+      console.error("Video URL and Resolution are required.");
       return;
     }
 
     setIsLoadingDownload(true);
     try {
       const formData = { videoUrl, resolution: selectedResolution };
-      const response = await axios.post('http://localhost:4000/api/download', formData);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/download`,
+        formData
+      );
       setDownloadResponse(response.data);
     } catch (error) {
-      console.error('An error occurred while downloading.');
+      console.error("An error occurred while downloading.");
       console.error(error);
     } finally {
       setIsLoadingDownload(false);
@@ -84,63 +105,106 @@ export function Component() {
 
   return (
     <>
-      <div className="items-center w-full max-w-md">
-        <form onSubmit={handleSearchSubmit}>
-          <div className=" flex rounded-md border ">
-            <Input
-              type="search"
-              placeholder="Enter YouTube Video URL"
-              className=" rounded-l-md border-r-0 focus-visible:none"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-            />
-            <Button
-              type="submit"
-              variant="ghost"
-              className="rounded-r-md"
-              disabled={isLoadingFormats}
+      <div className="p-10 pt-20 ">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-8 md:justify-around md:flex-row justify-center justify-items-center  items-center ">
+          <div className="items-center w-full max-w-md">
+            <form onSubmit={handleSearchSubmit}>
+              <div className="flex rounded-md border">
+                <Input
+                  type="search"
+                  placeholder="Enter YouTube Video URL"
+                  className="rounded-l-md border-r-0 focus-visible:none"
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                />
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  className="rounded-r-md"
+                  disabled={isLoadingFormats}
+                >
+                  {isLoadingFormats ? (
+                    <SpinnerIcon className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <SearchIcon className="h-5 w-5" />
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
+
+          <div className="flex w-full max-w-md">
+            <Select
+              disabled={isSelectDisabled || isLoadingDownload}
+              onValueChange={handleSelectChange}
             >
-              {isLoadingFormats ? (
-                <SpinnerIcon className="h-5 w-5 animate-spin" />
-              ) : (
-                <SearchIcon className="h-5 w-5" />
-              )}
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Resolution" />
+              </SelectTrigger>
+              <SelectContent>
+                {themeOptions.map((theme, index) => (
+                  <SelectItem key={index} value={theme}>
+                    {theme}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex ">
+            <Button
+              type="button"
+              onClick={handleDownload}
+              disabled={
+                !videoUrl ||
+                !selectedResolution ||
+                isLoadingDownload ||
+                isSelectDisabled
+              }
+            >
+              {isLoadingDownload ? "Converting..." : "Go"}
             </Button>
           </div>
-        </form>
-      </div>
-
-      <div className="flex w-full max-w-md">
-        <Select disabled={isSelectDisabled || isLoadingDownload} onValueChange={handleSelectChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Resolution" />
-          </SelectTrigger>
-          <SelectContent>
-            {themeOptions.map((theme, index) => (
-              <SelectItem key={index} value={theme}>
-                {theme}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex">
-        <Button type="button" onClick={handleDownload} disabled={!videoUrl || !selectedResolution || isLoadingDownload || isSelectDisabled}>
-          {isLoadingDownload ? 'Converting...' : 'Go'}
-        </Button>
-      </div>
-
-      {downloadResponse && (
-        <div className="flex flex-row mt-4">
-          <Button onClick={handlePreview} className="mr-2" disabled={isLoadingDownload || isSelectDisabled}>
-            Preview
-          </Button>
-          <Button onClick={handleDownloadClick} disabled={isLoadingDownload || isSelectDisabled}>
-            Download
-          </Button>
         </div>
-      )}
+        <div className="flex flex-col md:flex-row justify-start gap-10 md:gap-40 items-center py-10">
+          {title && (
+            <div className="md:mx-10 flex flex-col md:w-2/5 order-2 md:order-1 ">
+              <div className=" mt-4 ">
+                <h2 className="text-lg font-semibold ">{title}</h2>
+                <img
+                  src={thumbnailURL}
+                  alt="Thumbnail"
+                  className=" rounded-md mt-2 max-w-full h-auto"
+                />
+                <p className="mt-2 text-sm text-gray-600">
+                  Duration: {duration}
+                </p>
+              </div>
+            </div>
+          )}
+          {downloadResponse && (
+            <div className=" order-1 md:order-2 flex flex-row gap-5 md:gap-20">
+              <div className="flex mt-4 ">
+                <Button
+                  onClick={handlePreview}
+                  className="mr-2"
+                  disabled={isLoadingDownload || isSelectDisabled}
+                >
+                  Preview
+                </Button>
+              </div>
+              <div className="flex mt-4">
+                <Button
+                  onClick={handleDownloadClick}
+                  disabled={isLoadingDownload || isSelectDisabled}
+                >
+                  Download
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
@@ -177,10 +241,7 @@ function SpinnerIcon(props: any) {
       height="24"
     >
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path
-        fill="currentColor"
-        d="M12 2a10 10 0 00-1.993 19.801L12 22V2z"
-      />
+      <path fill="currentColor" d="M12 2a10 10 0 00-1.993 19.801L12 22V2z" />
     </svg>
   );
 }
