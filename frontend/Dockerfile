@@ -1,6 +1,6 @@
 
 # Use the node:20-alpine base image
-FROM node:20-alpine
+FROM node:19.5.0-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
