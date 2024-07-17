@@ -46,9 +46,6 @@ jobs:
 
     - name: Verify Pushed Image
       run: docker pull piyushm1501/frontend:latest  
-
-    - name: Print Backend URL
-      run: echo Backend URL: ${NEXT_PUBLIC_BACKEND_URL}
       
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
