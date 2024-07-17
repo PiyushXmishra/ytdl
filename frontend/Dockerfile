@@ -5,8 +5,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if exists) separately to optimize caching
-COPY package.json .
-COPY package-lock.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies (assuming NODE_ENV=development)
 RUN npm install
