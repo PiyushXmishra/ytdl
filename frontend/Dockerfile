@@ -20,8 +20,7 @@ COPY frontend .
 # ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
 # # Create .env.local file
-# RUN echo "NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL" > .env.local
-
+RUN echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} " > .env
 
 # Build your frontend application (assuming npm run build is defined in your package.json)
 RUN npm run build
