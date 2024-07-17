@@ -80,3 +80,6 @@ jobs:
 
           sudo docker run -d --network=host --name frontend -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} piyushm1501/frontend:latest
 
+    - name: Print Backend URL
+      run: echo "Backend URL: $NEXT_PUBLIC_BACKEND_URL"
+
