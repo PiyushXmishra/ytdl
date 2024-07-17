@@ -36,6 +36,7 @@ export function Component() {
   const fetchFormats = async () => {
     setIsLoadingFormats(true);
     try {
+      console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/formats`,
         { videoUrl },
@@ -68,7 +69,6 @@ export function Component() {
 
     setIsLoadingDownload(true);
     try {
-      console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
       const formData = { videoUrl, resolution: selectedResolution };
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/download`,
