@@ -42,6 +42,8 @@ jobs:
 
           echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > .env.local
 
+          export NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+
           sudo docker pull piyushm1501/frontend:latest
 
           sudo docker stop frontend || true
