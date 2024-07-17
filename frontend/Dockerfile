@@ -4,19 +4,15 @@ FROM node:20-alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 
 # Copy package.json and package-lock.json (if exists) separately to optimize caching
-COPY /package*.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies (assuming NODE_ENV=development)
-RUN NODE_ENV=development 
-RUN npm install
-
+RUN NODE_ENV=development npm i
 
 # Copy the entire frontend directory contents into the container at /app
-COPY . .
+COPY frontend .
 
 
 # # Set environment variable to be available during build
@@ -24,7 +20,7 @@ COPY . .
 # ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
 # # Create .env.local file
-# RUN echo "NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}" > .env
+# RUN echo "NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL" > .env.local
 
 
 # Build your frontend application (assuming npm run build is defined in your package.json)
@@ -34,6 +30,7 @@ RUN npm run build
 EXPOSE 3000
 
 ENV PORT 3000
+
 
 # Command to run your application
 CMD ["npm", "start"]
