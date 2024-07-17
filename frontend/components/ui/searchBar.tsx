@@ -13,6 +13,7 @@ import {
 
 export const dynamic = "force-dynamic";
 
+
 export function Component() {
   const [videoUrl, setVideoUrl] = useState("");
   const [themeOptions, setThemeOptions] = useState<string[]>([]);
