@@ -11,7 +11,9 @@ ENV NEXT_TELEMETRY_DISABLED 1
 COPY /package*.json ./
 
 # Install dependencies (assuming NODE_ENV=development)
-RUN NODE_ENV=development npm i
+RUN NODE_ENV=development 
+RUN npm install
+
 
 # Copy the entire frontend directory contents into the container at /app
 COPY . .
