@@ -7,6 +7,8 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
+ARG NEXT_PUBLIC_BACKEND_URL
+
 # Copy package.json and package-lock.json (if exists) separately to optimize caching
 COPY frontend/package*.json ./
 
