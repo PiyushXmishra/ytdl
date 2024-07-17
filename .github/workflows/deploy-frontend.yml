@@ -55,5 +55,6 @@ jobs:
 
           sudo docker stop frontend || true
           sudo docker rm frontend || true
+          sudo docker rmi piyushm1501/frontend || true
 
           sudo docker run -d --name frontend -p 3000:3000 piyushm1501/frontend:latest  

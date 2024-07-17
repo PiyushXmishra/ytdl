@@ -50,6 +50,7 @@ jobs:
 
           sudo docker stop backend || true
           sudo docker rm backend || true
+          sudo docker rmi piyushm1501/backend || true
 
           sudo docker run -d --name backend -p 4000:4000 \
             -e PROJECT_ID=${PROJECT_ID} \
