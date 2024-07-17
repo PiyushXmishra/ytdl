@@ -49,7 +49,9 @@ jobs:
 
     - name: Verify Pushed Image
       run: docker pull piyushm1501/backend:latest
-      run: docker pull piyushm1501/frontend:latest
+
+    - name: Verify Pushed Image
+      run: docker pull piyushm1501/frontend:latest      
       
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
