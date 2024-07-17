@@ -15,6 +15,9 @@ jobs:
     - name: Prepare Dockerfile
       run: cp ./frontend/Dockerfile ./Dockerfile
 
+    - name: Prepare .env file
+      run: echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > .env
+
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -39,10 +42,11 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
+          
 
           sudo docker pull piyushm1501/frontend:latest
 
           sudo docker stop frontend || true
           sudo docker rm frontend || true
 
-          sudo docker run -d --name frontend -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} piyushm1501/frontend:latest  
+          sudo docker run -d --name frontend -p 3000:3000 piyushm1501/frontend:latest  

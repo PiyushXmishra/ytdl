@@ -19,6 +19,9 @@ COPY frontend .
 # ARG NEXT_PUBLIC_BACKEND_URL
 # ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
+# # Create .env.local file
+
+
 
 # Build your frontend application (assuming npm run build is defined in your package.json)
 RUN npm run build
