@@ -14,12 +14,12 @@ RUN NODE_ENV=development npm i
 COPY frontend .
 
 
-# Set environment variable to be available during build
-ARG NEXT_PUBLIC_BACKEND_URL
-ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+# # Set environment variable to be available during build
+# ARG NEXT_PUBLIC_BACKEND_URL
+# ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 
-# Create .env.local file
-RUN echo "NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL" > .env.local
+# # Create .env.local file
+# RUN echo "NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL" > .env.local
 
 
 # Build your frontend application (assuming npm run build is defined in your package.json)
