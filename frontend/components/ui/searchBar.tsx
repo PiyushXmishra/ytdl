@@ -41,7 +41,7 @@ export function Component() {
     try {
 
       const response = await axios.post(
-        `http://34.27.210.129:4000/api/formats`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/formats`,
         { videoUrl },
         { timeout: 60000 }
       );
@@ -74,7 +74,7 @@ export function Component() {
     try {
       const formData = { videoUrl, resolution: selectedResolution };
       const response = await axios.post(
-        `http://34.27.210.129:4000/api/download`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/download`,
         formData
       );
       setDownloadResponse(response.data);
