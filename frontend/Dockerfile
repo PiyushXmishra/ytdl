@@ -14,10 +14,6 @@ RUN NODE_ENV=development npm i
 # Copy the entire frontend directory contents into the container at /app
 COPY frontend .
 
-# Copy the .env files
-COPY frontend/.env* ./
-
-
 RUN npm run build
 
 # Expose port 3000 to the outside world
