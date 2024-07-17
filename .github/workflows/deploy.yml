@@ -75,7 +75,7 @@ jobs:
 
           sudo docker pull piyushm1501/frontend:latest
           
-          echo "NEXT_PUBLIC_BACKEND_URL=http://34.27.210.129:4000" > frontend/.env.local
+          echo "NEXT_PUBLIC_BACKEND_URL=http://34.27.210.129:4000" > .env.local
 
           sudo docker stop frontend || true
           sudo docker rm frontend || true
