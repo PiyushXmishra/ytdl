@@ -47,6 +47,4 @@ jobs:
           sudo docker stop frontend || true
           sudo docker rm frontend || true
 
-          sudo docker run -d --name frontend -p 3000:3000 \
-            -e NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} \ 
-            piyushm1501/frontend:latest  
+          sudo docker run -d --name frontend -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} piyushm1501/frontend:latest  
