@@ -8,7 +8,7 @@ WORKDIR /app
 COPY frontend/package*.json ./
 
 # Install dependencies (assuming NODE_ENV=development)
-RUN npm install
+RUN NODE_ENV=development npm i
 
 # Copy the entire frontend directory contents into the container at /app
 COPY . .
