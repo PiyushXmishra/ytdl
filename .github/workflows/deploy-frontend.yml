@@ -17,10 +17,10 @@ jobs:
 
     - name: Prepare .env file
       run: |
-      
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > .frontend/.env
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > .frontend/.env.development
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > .frontend/.env.production
+
+        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env
+        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.development
+        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.production
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
