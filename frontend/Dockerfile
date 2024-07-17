@@ -9,10 +9,12 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN NODE_ENV=development npm install
 
 # Copy the entire frontend directory contents into the container at /app
 COPY . .
+
+# RUN echo "NEXT_PUBLIC_BACKEND_URL=http://34.27.210.129:4000" > .env
 
 # Build your frontend application
 RUN npm run build
