@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /usr/bin/bash
 
 # Copy package.json and package-lock.json (if exists) separately to optimize caching
 COPY frontend/package*.json ./
