@@ -40,6 +40,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
 
+          echo "NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}" > .env.local
+
           sudo docker pull piyushm1501/frontend:latest
 
           sudo docker stop frontend || true
