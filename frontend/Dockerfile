@@ -11,7 +11,7 @@ COPY frontend/package*.json ./
 RUN NODE_ENV=development npm i
 
 # Copy the entire frontend directory contents into the container at /app
-COPY . .
+COPY frontend .
 
 # Build your frontend application (assuming npm run build is defined in your package.json)
 RUN npm run build
