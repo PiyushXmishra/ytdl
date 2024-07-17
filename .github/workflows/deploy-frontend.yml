@@ -12,12 +12,12 @@ jobs:
     - name: Check Out Repo
       uses: actions/checkout@v2
 
-    - name: Prepare .env file
-      run: |
+    # - name: Prepare .env file
+    #   run: |
 
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.development
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.production
+    #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env
+    #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.development
+    #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" > ./frontend/.env.production
 
 
     - name: Prepare Dockerfile
@@ -56,4 +56,4 @@ jobs:
           sudo docker stop frontend || true
           sudo docker rm frontend || true
 
-          sudo docker run -d --name frontend -p 3000:3000 -e NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} piyushm1501/frontend:latest  
+          sudo docker run -d --name frontend -p 3000:3000 piyushm1501/frontend:latest  
