@@ -50,7 +50,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           
-
           sudo docker pull piyushm1501/frontend:latest
 
           sudo docker stop frontend || true
